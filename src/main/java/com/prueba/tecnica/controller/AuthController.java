@@ -50,35 +50,28 @@ public class AuthController {
     }
 
     @PostMapping("register")
-    public ResponseEntity<String> registrar(@RequestBody DtoRegistro registro){
-
-        if (usuarioRepository.existsByUsername(registro.getUsername())){
-            return new ResponseEntity<>("El Ususario ya se encuentra registrado", HttpStatus.BAD_REQUEST);
+    public ResponseEntity<String> registrar(@RequestBody DtoRegistro registro) {
+        if (usuarioRepository.existsByUsername(registro.getUsername())) {
+            return new ResponseEntity<>("El usuario ya se encuentra registrado", HttpStatus.BAD_REQUEST);
         }
 
         Usuario usuario = new Usuario();
         usuario.setUsername(registro.getUsername());
         usuario.setPassword(passwordEncoder.encode(registro.getPassword()));
-        Role role = roleRepository.findByName("VENDEDOR").get();
-        usuario.setRoles(Collections.singletonList(role));
-        usuarioRepository.save(usuario);
-        return new ResponseEntity<>("Registro Exitoso!", HttpStatus.OK);
-    }
 
-    @PostMapping("registerAdmin")
-    public ResponseEntity<String> registrarAdmin(@RequestBody DtoRegistro registro){
-
-        if (usuarioRepository.existsByUsername(registro.getUsername())){
-            return new ResponseEntity<>("El Ususario ya se encuentra registrado", HttpStatus.BAD_REQUEST);
+        // Verificar si se proporcionó un roleName en la solicitud
+        if (registro.getRoleName() != null) {
+            // Buscar el rol por nombre en la base de datos
+            Role role = roleRepository.findByName(registro.getRoleName()).orElse(null);
+            // Verificar si se encontró el rol
+            if (role == null) {
+                return new ResponseEntity<>("El rol especificado no existe", HttpStatus.BAD_REQUEST);
+            }
+            usuario.setRoles(Collections.singletonList(role));
         }
 
-        Usuario usuario = new Usuario();
-        usuario.setUsername(registro.getUsername());
-        usuario.setPassword(passwordEncoder.encode(registro.getPassword()));
-        Role role = roleRepository.findByName("ADMIN").get();
-        usuario.setRoles(Collections.singletonList(role));
         usuarioRepository.save(usuario);
-        return new ResponseEntity<>("Registro Exitoso!", HttpStatus.OK);
+        return new ResponseEntity<>("Registro exitoso!", HttpStatus.OK);
     }
 
     @PutMapping("/update")

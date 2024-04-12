@@ -53,9 +53,11 @@ public class SecurityConfig {
                 .authorizeHttpRequests()
 
                 .requestMatchers("/api/auth/login").permitAll()
-                .requestMatchers(HttpMethod.POST,"/api/auth/**").hasAuthority("ADMIN")
-                .requestMatchers(HttpMethod.PUT,"/api/auth/**").hasAuthority("ADMIN")
-                .requestMatchers(HttpMethod.DELETE, "/api/auth/**").hasAuthority("ADMIN")
+
+                .requestMatchers(HttpMethod.GET, "/api/user/**").permitAll()
+                .requestMatchers(HttpMethod.POST,"/api/user/**").hasAuthority("ADMIN")
+                .requestMatchers(HttpMethod.PUT,"/api/user/**").hasAuthority("ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/api/user/**").hasAuthority("ADMIN")
 
                 .requestMatchers(HttpMethod.POST,"/api/producto/**").hasAuthority("ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/api/producto/**").hasAuthority("ADMIN")

@@ -9,5 +9,7 @@ public class DtoRegistro {
     private String username;
     private String password;
     private String roleName;
+    private String correo;
+    private String documento;
 
 }

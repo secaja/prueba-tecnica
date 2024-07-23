@@ -58,6 +58,8 @@ public class AmindUserController {
         Usuario usuario = new Usuario();
         usuario.setUsername(registro.getUsername());
         usuario.setPassword(passwordEncoder.encode(registro.getPassword()));
+        usuario.setCorreo(registro.getCorreo());
+        usuario.setDocumento(registro.getDocumento());
 
         if (registro.getRoleName() != null) {
             Role role = roleRepository.findByName(registro.getRoleName()).orElse(null);
@@ -80,6 +82,8 @@ public class AmindUserController {
 
         Usuario usuario = optionalUsuario.get();
         usuario.setPassword(passwordEncoder.encode(registro.getPassword()));
+        usuario.setDocumento((registro.getDocumento()));
+        usuario.setCorreo((registro.getCorreo()));
         Optional<Role> optionalRole = roleRepository.findByName(registro.getRoleName());
 
         if (optionalRole.isEmpty()){

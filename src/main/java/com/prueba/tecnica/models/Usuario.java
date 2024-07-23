@@ -22,6 +22,8 @@ public class Usuario {
     private Long idUsusario;
 
     private String username;
+    private String correo;
+    private String documento;
 
     @JsonIgnore
     private String password;

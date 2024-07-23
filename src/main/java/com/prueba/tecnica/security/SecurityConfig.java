@@ -53,19 +53,12 @@ public class SecurityConfig {
                 .authorizeHttpRequests()
 
                 .requestMatchers("/api/auth/login").permitAll()
+                .requestMatchers("/api/marvel/**").permitAll()
 
                 .requestMatchers(HttpMethod.GET, "/api/user/**").permitAll()
                 .requestMatchers(HttpMethod.POST,"/api/user/**").hasAuthority("ADMIN")
                 .requestMatchers(HttpMethod.PUT,"/api/user/**").hasAuthority("ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/api/user/**").hasAuthority("ADMIN")
-
-                .requestMatchers(HttpMethod.POST,"/api/producto/**").hasAuthority("ADMIN")
-                .requestMatchers(HttpMethod.DELETE, "/api/producto/**").hasAuthority("ADMIN")
-                .requestMatchers(HttpMethod.PUT, "/api/producto/**").hasAuthority("ADMIN")
-                .requestMatchers(HttpMethod.GET, "/api/producto/**").hasAnyAuthority("ADMIN", "VENDEDOR")
-
-                .requestMatchers(HttpMethod.POST, "/api/inventario/venta").hasAnyAuthority("ADMIN", "VENDEDOR")
-                .requestMatchers(HttpMethod.POST, "/api/inventario/entrada").hasAuthority("ADMIN")
 
                 .anyRequest().authenticated()
                 .and()

@@ -51,7 +51,7 @@ public class AmindUserController {
 
     @PostMapping("register")
     public ResponseEntity<String> registrar(@RequestBody DtoRegistro registro) {
-        if (usuarioRepository.existsByUsername(registro.getUsername())) {
+        if (usuarioRepository.existsByUsername(registro.getUsername(), registro.getDocumento())) {
             return new ResponseEntity<>("El usuario ya se encuentra registrado", HttpStatus.BAD_REQUEST);
         }
 

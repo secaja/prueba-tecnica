@@ -40,11 +40,9 @@ public class MarvelAPIClient {
         headers.set("Accept", MediaType.APPLICATION_JSON_VALUE);
         headers.set("Content-Type", MediaType.APPLICATION_JSON_VALUE);
 
-        // Construir el hash MD5 para la autenticación
         String timestamp = String.valueOf(System.currentTimeMillis() / 1000);
         String hash = MD5(timestamp + privateKey + publicKey);
 
-        // Construir la URL completa con los parámetros requeridos
         String url = UriComponentsBuilder.fromHttpUrl(resourceUrl)
                 .queryParam("apikey", publicKey)
                 .queryParam("ts", timestamp)
@@ -55,24 +53,32 @@ public class MarvelAPIClient {
     }
 
     private List<Comic> transformarData(ComicDataWrapper comicDataWrapper) {
-
         List<Comic> comics = new ArrayList<>();
-        Comic comic;
-        for (com.prueba.tecnica.service.Model.Comic item: comicDataWrapper.getComicData().getResults()){
-            comic = new Comic();
-            comic.setId(item.getId());
-            comic.setDescription(item.getDescription());
-            comic.setTitle(item.getTitle());
-            if (item.getThumbnail() != null && item.getThumbnail().getPath() != null && !item.getThumbnail().getPath().isEmpty()
-                    && item.getThumbnail().getExtension() != null && !item.getThumbnail().getExtension().isEmpty()) {
-                String pathWithExtension = item.getThumbnail().getPath() + "." + item.getThumbnail().getExtension();
-                comic.setUrlImagen(pathWithExtension);
+
+        if (comicDataWrapper != null && comicDataWrapper.getComicData() != null
+                && comicDataWrapper.getComicData().getResults() != null) {
+
+            for (com.prueba.tecnica.service.Model.Comic item : comicDataWrapper.getComicData().getResults()) {
+                Comic comic = new Comic();
+                comic.setId(item.getId());
+                comic.setDescription(item.getDescription());
+                comic.setTitle(item.getTitle());
+
+                if (item.getThumbnail() != null && item.getThumbnail().getPath() != null
+                        && !item.getThumbnail().getPath().isEmpty()
+                        && item.getThumbnail().getExtension() != null && !item.getThumbnail().getExtension().isEmpty()) {
+                    String pathWithExtension = item.getThumbnail().getPath() + "." + item.getThumbnail().getExtension();
+                    comic.setUrlImagen(pathWithExtension);
+                }
+
+                comic.setModified(item.getModified());
+                comics.add(comic);
             }
-            comic.setModified(item.getModified());
-            comics.add(comic);
         }
-        return comics;
+
+        return comics; // Devuelve una lista vacía si no hay datos
     }
+
     private String MD5(String input) {
         try {
             MessageDigest md = MessageDigest.getInstance("MD5");

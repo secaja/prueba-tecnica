@@ -56,8 +56,8 @@ public class SecurityConfig {
                 .requestMatchers("/api/marvel/**").permitAll()
 
                 .requestMatchers(HttpMethod.GET, "/api/user/**").permitAll()
-                .requestMatchers(HttpMethod.POST,"/api/user/**").hasAuthority("ADMIN")
-                .requestMatchers(HttpMethod.PUT,"/api/user/**").hasAuthority("ADMIN")
+                .requestMatchers(HttpMethod.POST,"/api/user/**").permitAll()
+                .requestMatchers(HttpMethod.PUT,"/api/user/**").permitAll()
                 .requestMatchers(HttpMethod.DELETE, "/api/user/**").hasAuthority("ADMIN")
 
                 .anyRequest().authenticated()
